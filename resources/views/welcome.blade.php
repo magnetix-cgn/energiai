@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EnergiAI - KI-gestuetztes Energiemonitoring</title>
-    <meta name="description" content="EnergiAI entwickelt KI-gestuetztes Energiemonitoring fuer Kommunen, Schulen und oeffentliche Gebaeude.">
+    <title>EnergiAI - KI-gestütztes Energiemonitoring</title>
+    <meta name="description" content="EnergiAI entwickelt KI-gestütztes Energiemonitoring für Kommunen, Schulen und öffentliche Gebäude.">
     <style>
         :root {
             color-scheme: light;
@@ -242,21 +242,21 @@
                 <div class="brand">
                     <img src="/assets/fulllogo_transparent.png" alt="EnergiAI">
                 </div>
-                <p class="eyebrow">Energiemonitoring fuer oeffentliche Gebaeude</p>
+                <p class="eyebrow">Energiemonitoring für öffentliche Gebäude</p>
                 <h1 id="hero-title">EnergiAI</h1>
                 <p class="lead">
-                    KI-gestuetztes Energiemonitoring fuer Kommunen, Schulen und oeffentliche Gebaeude:
-                    Daten zusammenfuehren, Verbrauch verstehen, Einsparpotenziale sichtbar machen.
+                    KI-gestütztes Energiemonitoring für Kommunen, Schulen und öffentliche Gebäude:
+                    Daten zusammenführen, Verbrauch verstehen, Einsparpotenziale sichtbar machen.
                 </p>
                 <div class="actions">
                     <a class="button" href="mailto:hello@energiai.de">Kontakt aufnehmen</a>
                     <a class="button secondary" href="#ansatz">Ansatz ansehen</a>
                 </div>
             </div>
-            <div class="visual" role="img" aria-label="Solaranlage und Gebaeude als Symbol fuer Energiemonitoring">
+            <div class="visual" role="img" aria-label="Solaranlage und Gebäude als Symbol für Energiemonitoring">
                 <div class="metric-panel" aria-label="EnergiAI Monitoring Kennzahlen">
                     <div class="metric-row">
-                        <span class="metric-label">Gebaeudefokus</span>
+                        <span class="metric-label">Gebäudefokus</span>
                         <span class="metric-value">24/7</span>
                     </div>
                     <div class="metric-row">
@@ -265,7 +265,7 @@
                     </div>
                     <div class="metric-row">
                         <span class="metric-label">Ziel</span>
-                        <span class="metric-value">CO2</span>
+                        <span class="metric-value">CO₂</span>
                     </div>
                 </div>
             </div>
@@ -276,15 +276,15 @@
                 <div class="grid">
                     <article class="card">
                         <h2>Kommunale Transparenz</h2>
-                        <p>Verbrauchsdaten aus Gebaeuden werden zentral sichtbar und fuer Verwaltung, Technik und Reporting nutzbar.</p>
+                        <p>Verbrauchsdaten aus Gebäuden werden zentral sichtbar und für Verwaltung, Technik und Reporting nutzbar.</p>
                     </article>
                     <article class="card">
-                        <h2>KI-gestuetzte Analyse</h2>
+                        <h2>KI-gestützte Analyse</h2>
                         <p>Anomalien, Lastprofile und Einsparpotenziale werden automatisch erkannt und nachvollziehbar aufbereitet.</p>
                     </article>
                     <article class="card">
                         <h2>Pragmatische Integration</h2>
-                        <p>EnergiAI ist fuer bestehende Infrastruktur gedacht: schrittweise einfuehrbar, offen dokumentiert und betreibbar.</p>
+                        <p>EnergiAI ist für bestehende Infrastruktur gedacht: schrittweise einführbar, offen dokumentiert und betreibbar.</p>
                     </article>
                 </div>
             </div>
@@ -292,7 +292,7 @@
     </main>
 
     <footer>
-        Picologic GmbH · Universitaetstr. 3 · 56070 Koblenz · hello@energiai.de
+        Picologic GmbH · Universitätstr. 3 · 56070 Koblenz · hello@energiai.de
     </footer>
 </body>
 </html>

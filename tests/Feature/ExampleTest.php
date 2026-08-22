@@ -13,7 +13,7 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('EnergiAI');
-        $response->assertSee('KI-gestuetztes Energiemonitoring');
+        $response->assertSee('KI-gestütztes Energiemonitoring');
         $response->assertSee('/assets/fulllogo_transparent.png');
     }
 }
