@@ -176,6 +176,11 @@
             document.documentElement.dataset.theme = theme;
         })();
     </script>
+    <script>
+        window.setTimeout(function () {
+            window.location.reload();
+        }, 300000);
+    </script>
     <style>
         :root {
             color-scheme: light;
