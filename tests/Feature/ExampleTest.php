@@ -36,8 +36,9 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Öffentliche Live-Demo');
-        $response->assertSee('Ausgeschlossen');
-        $response->assertSee('2.013.530,55 °C');
+        $response->assertSee('Sporthalle Lohmar Temperatur');
+        $response->assertDontSee('Ausgeschlossen');
+        $response->assertDontSee('2.013.530,55 °C');
     }
 
     public function test_impressum_renders_provider_details(): void

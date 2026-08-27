@@ -54,8 +54,9 @@
                 ['label' => 'Gemessen', 'value' => 'Temperatur 21,6 °C', 'status' => 'OK'],
                 ['label' => 'Berechnet', 'value' => 'Tagesverbrauch 214 kWh', 'status' => 'OK'],
                 ['label' => 'Geschätzt', 'value' => 'CO₂ 82 kg', 'status' => 'Faktor dokumentiert'],
-                ['label' => 'Ausgeschlossen', 'value' => '2.013.530,55 °C', 'status' => 'Unplausibler Rohwert'],
             ],
+            'quality_live_temperature_label' => 'Sporthalle Lohmar Temperatur',
+            'quality_live_temperature_status' => 'CleverHome Labs',
             'ai_title' => 'Beispielhafte EnergiAI-Interpretation',
             'ai_text' => 'Beispiel: Die höchste plausible Temperatur im Demozeitraum liegt innerhalb der Nutzungszeit. Ein extrem hoher Rohwert wurde als unplausibel erkannt und aus Maxima, Durchschnitt und Empfehlung ausgeschlossen.',
         ],
@@ -107,8 +108,9 @@
                 ['label' => 'Measured', 'value' => 'Temperature 21.6 °C', 'status' => 'OK'],
                 ['label' => 'Calculated', 'value' => 'Daily energy 214 kWh', 'status' => 'OK'],
                 ['label' => 'Estimated', 'value' => 'CO₂ 82 kg', 'status' => 'Factor documented'],
-                ['label' => 'Excluded', 'value' => '2,013,530.55 °C', 'status' => 'Implausible raw value'],
             ],
+            'quality_live_temperature_label' => 'Sporthalle Lohmar temperature',
+            'quality_live_temperature_status' => 'CleverHome Labs',
             'ai_title' => 'Example EnergiAI interpretation',
             'ai_text' => 'Example: The highest plausible temperature in the demo period is within usage hours. An extreme raw value was detected as implausible and excluded from maxima, averages and recommendations.',
         ],
@@ -122,6 +124,18 @@
             $liveTemperature = $decodedLiveTemperature;
         }
     }
+
+    $liveTemperatureValue = '-- °C';
+    $liveTemperatureStatus = $copy['live_temperature_unavailable'];
+    if (($liveTemperature['ok'] ?? false) && isset($liveTemperature['value_celsius'])) {
+        $liveTemperatureValue = number_format((float) $liveTemperature['value_celsius'], 1, $isEnglish ? '.' : ',', '') . ' ' . ($liveTemperature['unit'] ?? '°C');
+        $liveTemperatureStatus = $liveTemperature['recorded_at'] ?? $liveTemperature['updated_at'] ?? $copy['quality_live_temperature_status'];
+    }
+    $copy['quality_items'][] = [
+        'label' => $copy['quality_live_temperature_label'],
+        'value' => $liveTemperatureValue,
+        'status' => $liveTemperatureStatus,
+    ];
 @endphp
 <!DOCTYPE html>
 <html lang="{{ $locale }}" data-theme="light">
