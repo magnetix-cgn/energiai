@@ -31,6 +31,10 @@
             ],
             'data_title' => 'Gebäude im Blick',
             'data_text' => 'EnergiAI ist für reale Betriebsdaten gedacht: stündliche Messwerte, Raumklima, Verbrauchsprofile und Zustände aus vorhandenen Systemen.',
+            'live_temperature_label' => 'Aktuelle Temperatur',
+            'live_temperature_source' => 'Quelle',
+            'live_temperature_updated' => 'Aktualisiert',
+            'live_temperature_unavailable' => 'Live-Wert wird vorbereitet',
             'signals' => ['Stromverbrauch', 'Wärmebedarf', 'Temperatur', 'Luftfeuchte', 'Anomalien', 'Berichte'],
             'steps' => [
                 ['title' => 'Daten importieren', 'text' => 'Vorhandene Messreihen werden unverändert übernommen und nachvollziehbar bereinigt.'],
@@ -80,6 +84,10 @@
             ],
             'data_title' => 'Buildings in view',
             'data_text' => 'EnergiAI is designed for real operational data: hourly readings, indoor climate, usage profiles and states from existing systems.',
+            'live_temperature_label' => 'Current temperature',
+            'live_temperature_source' => 'Source',
+            'live_temperature_updated' => 'Updated',
+            'live_temperature_unavailable' => 'Live value is being prepared',
             'signals' => ['Power usage', 'Heat demand', 'Temperature', 'Humidity', 'Anomalies', 'Reports'],
             'steps' => [
                 ['title' => 'Import data', 'text' => 'Existing time series are preserved and cleaned in a traceable way.'],
@@ -105,6 +113,15 @@
             'ai_text' => 'Example: The highest plausible temperature in the demo period is within usage hours. An extreme raw value was detected as implausible and excluded from maxima, averages and recommendations.',
         ],
     ][$locale];
+
+    $liveTemperature = null;
+    $liveTemperaturePath = public_path('data/cleverhome-latest.json');
+    if (is_file($liveTemperaturePath)) {
+        $decodedLiveTemperature = json_decode(file_get_contents($liveTemperaturePath), true);
+        if (is_array($decodedLiveTemperature)) {
+            $liveTemperature = $decodedLiveTemperature;
+        }
+    }
 @endphp
 <!DOCTYPE html>
 <html lang="{{ $locale }}" data-theme="light">
@@ -524,6 +541,41 @@
         .data-panel {
             padding: 26px;
             background: linear-gradient(145deg, var(--surface), var(--soft-ui));
+        }
+
+        .live-reading {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 18px;
+            border: 1px solid color-mix(in srgb, var(--brand-energy-green) 42%, var(--border));
+            border-radius: 8px;
+            padding: 18px;
+            background: color-mix(in srgb, var(--brand-energy-green) 9%, var(--surface));
+        }
+
+        .live-reading__topline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 850;
+            text-transform: uppercase;
+        }
+
+        .live-reading__value {
+            color: var(--text);
+            font-size: clamp(2.1rem, 4vw, 3.4rem);
+            font-weight: 950;
+            line-height: 1;
+        }
+
+        .live-reading__meta {
+            display: grid;
+            gap: 4px;
+            color: var(--muted);
+            font-size: 0.92rem;
         }
 
         .signals {
@@ -1014,6 +1066,28 @@
                     <p>{{ $copy['data_text'] }}</p>
                 </div>
                 <div class="data-panel">
+                    <div class="live-reading">
+                        <div class="live-reading__topline">
+                            <span>{{ $copy['live_temperature_label'] }}</span>
+                            <span>{{ ($liveTemperature['ok'] ?? false) ? 'Live' : 'Demo' }}</span>
+                        </div>
+                        @if(($liveTemperature['ok'] ?? false) && isset($liveTemperature['value_celsius']))
+                            <div class="live-reading__value">
+                                {{ number_format((float) $liveTemperature['value_celsius'], 1, $isEnglish ? '.' : ',', '') }} {{ $liveTemperature['unit'] ?? '°C' }}
+                            </div>
+                            <div class="live-reading__meta">
+                                <span>{{ $liveTemperature['location_label'] ?? 'Turnhalle Lohmar' }}</span>
+                                <span>{{ $copy['live_temperature_source'] }}: {{ $liveTemperature['source'] ?? 'CleverHome Labs' }}</span>
+                                <span>{{ $copy['live_temperature_updated'] }}: {{ $liveTemperature['recorded_at'] ?? $liveTemperature['updated_at'] ?? '-' }}</span>
+                            </div>
+                        @else
+                            <div class="live-reading__value">-- {{ $liveTemperature['unit'] ?? '°C' }}</div>
+                            <div class="live-reading__meta">
+                                <span>Turnhalle Lohmar</span>
+                                <span>{{ $copy['live_temperature_unavailable'] }}</span>
+                            </div>
+                        @endif
+                    </div>
                     <ul class="signals">
                         @foreach ($copy['signals'] as $signal)
                             <li>{{ $signal }}</li>
