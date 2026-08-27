@@ -33,7 +33,7 @@
             'data_text' => 'EnergiAI ist für reale Betriebsdaten gedacht: stündliche Messwerte, Raumklima, Verbrauchsprofile und Zustände aus vorhandenen Systemen.',
             'live_temperature_label' => 'Aktuelle Temperatur',
             'live_temperature_source' => 'Quelle',
-            'live_temperature_updated' => 'Aktualisiert',
+            'live_temperature_updated' => 'Wert aktualisiert',
             'live_temperature_unavailable' => 'Live-Wert wird vorbereitet',
             'signals' => ['Stromverbrauch', 'Wärmebedarf', 'Temperatur', 'Luftfeuchte', 'Anomalien', 'Berichte'],
             'steps' => [
@@ -87,7 +87,7 @@
             'data_text' => 'EnergiAI is designed for real operational data: hourly readings, indoor climate, usage profiles and states from existing systems.',
             'live_temperature_label' => 'Current temperature',
             'live_temperature_source' => 'Source',
-            'live_temperature_updated' => 'Updated',
+            'live_temperature_updated' => 'Value updated',
             'live_temperature_unavailable' => 'Live value is being prepared',
             'signals' => ['Power usage', 'Heat demand', 'Temperature', 'Humidity', 'Anomalies', 'Reports'],
             'steps' => [
@@ -125,11 +125,27 @@
         }
     }
 
+    $formatLocalTimestamp = static function (?string $timestamp) use ($isEnglish): string {
+        if (!$timestamp) {
+            return '-';
+        }
+
+        try {
+            $date = new DateTimeImmutable($timestamp);
+            $localDate = $date->setTimezone(new DateTimeZone('Europe/Berlin'));
+
+            return $isEnglish ? $localDate->format('Y-m-d H:i:s T') : $localDate->format('d.m.Y H:i:s T');
+        } catch (Throwable) {
+            return $timestamp;
+        }
+    };
+
+    $liveTemperatureTimestamp = $formatLocalTimestamp($liveTemperature['recorded_at'] ?? $liveTemperature['updated_at'] ?? null);
     $liveTemperatureValue = '-- °C';
     $liveTemperatureStatus = $copy['live_temperature_unavailable'];
     if (($liveTemperature['ok'] ?? false) && isset($liveTemperature['value_celsius'])) {
         $liveTemperatureValue = number_format((float) $liveTemperature['value_celsius'], 1, $isEnglish ? '.' : ',', '') . ' ' . ($liveTemperature['unit'] ?? '°C');
-        $liveTemperatureStatus = $liveTemperature['recorded_at'] ?? $liveTemperature['updated_at'] ?? $copy['quality_live_temperature_status'];
+        $liveTemperatureStatus = $copy['live_temperature_updated'] . ': ' . $liveTemperatureTimestamp;
     }
     $copy['quality_items'][] = [
         'label' => $copy['quality_live_temperature_label'],
@@ -1092,13 +1108,14 @@
                             <div class="live-reading__meta">
                                 <span>{{ $liveTemperature['location_label'] ?? 'Turnhalle Lohmar' }}</span>
                                 <span>{{ $copy['live_temperature_source'] }}: {{ $liveTemperature['source'] ?? 'CleverHome Labs' }}</span>
-                                <span>{{ $copy['live_temperature_updated'] }}: {{ $liveTemperature['recorded_at'] ?? $liveTemperature['updated_at'] ?? '-' }}</span>
+                                <span>{{ $copy['live_temperature_updated'] }}: {{ $liveTemperatureTimestamp }}</span>
                             </div>
                         @else
                             <div class="live-reading__value">-- {{ $liveTemperature['unit'] ?? '°C' }}</div>
                             <div class="live-reading__meta">
                                 <span>Turnhalle Lohmar</span>
                                 <span>{{ $copy['live_temperature_unavailable'] }}</span>
+                                <span>{{ $copy['live_temperature_updated'] }}: {{ $liveTemperatureTimestamp }}</span>
                             </div>
                         @endif
                     </div>
